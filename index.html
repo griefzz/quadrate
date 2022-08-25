@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width">
+    <title>Quadrate | Slogan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
+        integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        :root {
+            --border-style: 5px solid gray;
+            --border-radius: 5px;
+            --background-color: black;
+        }
+
+        * {
+            box-sizing: border-box;
+            padding: 0;
+            margin: 0;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--background-color);
+        }
+
+        .main {
+            display: grid;
+            grid-template-columns: 30% 30% 15% 23%;
+            grid-template-rows: auto;
+            grid-template-areas:
+                "search search search search"
+                "video video playlist chat"
+                "video video playlist users";
+            align-items: stretch;
+            grid-gap: 8px;
+            width: 100vw;
+            height: 98vh;
+        }
+
+        .search {
+            /* grid */
+            grid-area: search;
+            /* flex: center items with gap */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            /* style */
+            background-color: rgb(54, 54, 54);
+            /* size */
+            padding-bottom: 10px;
+            padding-top: 10px;
+        }
+
+        .search input[type=text] {
+            width: 25%;
+            font-size: 17px;
+            border: none;
+            text-align: center;
+            border-radius: var(--border-radius);
+        }
+
+        .search button {
+            background: #ddd;
+            font-size: 17px;
+            border: none;
+            cursor: pointer;
+            width: 25px;
+            border-radius: var(--border-radius);
+            appearance: auto;
+        }
+
+        .video {
+            /* grid */
+            grid-area: video;
+            /* flex: center */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .video>iframe {
+            border: var(--border-style);
+            border-radius: var(--border-radius);
+            height: 90%;
+            width: 90%;
+        }
+
+        .playlist {
+            /* grid */
+            grid-area: playlist;
+            /* flex: make elements a column*/
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px 5px;
+            /* border */
+            border: var(--border-style);
+            border-radius: var(--border-radius);
+            /* scrollable */
+            overflow-x: hidden;
+            overflow-y: auto;
+            text-align: center;
+        }
+
+        .playlist-item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .playlist-item>img {
+            width: 100%;
+            height: 100%;
+            object-fit: fill;
+        }
+
+        .playlist-overlay {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9;
+            background-color: black;
+            opacity: .0;
+            transition: all 0.5s ease;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .playlist-overlay>button {
+            width: 25%;
+            height: 25%;
+            appearance: auto;
+        }
+
+        .playlist-overlay:hover {
+            opacity: .7;
+        }
+
+        .chat {
+            /* grid */
+            grid-area: chat;
+        }
+
+        .chat-box {
+            /* grid */
+            grid-area: chat;
+            /* style */
+            border: var(--border-style);
+            border-radius: var(--border-radius);
+            color: gray;
+            /* sizing */
+            padding: 10px;
+            /* word wrap */
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            /* scrollable */
+            overflow-x: hidden;
+            overflow-y: auto;
+            height: 600px;
+        }
+
+        .chat input[type=text] {
+            grid-area: chat;
+            font-size: 12px;
+            width: 90%;
+            padding: 3px;
+            margin-top: 7px;
+            border-radius: var(--border-radius);
+        }
+
+        .chat-btn {
+            grid-area: chat;
+            border: none;
+            cursor: pointer;
+            width: 36px;
+            height: 24px;
+            border-radius: var(--border-radius);
+            appearance: auto;
+        }
+
+        .users {
+            /* grid */
+            grid-area: users;
+            /* style */
+            border: var(--border-style);
+            border-radius: var(--border-radius);
+            color: gray;
+            /* sizing */
+            padding: 10px;
+            /* word wrap */
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            /* scrollable */
+            overflow-x: hidden;
+            overflow-y: auto;
+            height: 200px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main">
+        <div class="search">
+            <input class="search-input" type="text" placeholder="Youtube Video URL Here..."></input>
+            <button class="search-btn"><i class="fa fa-search"></i></button>
+        </div>
+
+        <div class="video">
+            <iframe id="youtube-iframe" src="https://www.youtube.com/embed/M7lc1UVf-VE?enablejsapi=1" frameborder="0"
+                enablejsapi="true" allow="fullscreen;" style="visibility: hidden" ;></iframe>
+        </div>
+
+        <div class="playlist"></div>
+
+        <div class="chat">
+            <div class="chat-box"></div>
+            <input class="chat-input" type="text" placeholder="Send a message"></input>
+            <button class="chat-btn"><i class="fa-solid fa-reply"></i></button>
+        </div>
+
+        <div class="users"></div>
+    </div>
+</body>
+
+<script>
+    "use strict";
+    /* ================ globals ================  */
+    let socket = new WebSocket("ws://localhost:12312/ws");
+    let youtubeIframe = document.querySelector("#youtube-iframe");
+    let searchInput = document.querySelector(".search-input");
+    let searchBtn = document.querySelector(".search-btn");
+    let users = document.querySelector(".users");
+    let chatBox = document.querySelector(".chat-box");
+    let chatBtn = document.querySelector(".chat-btn");
+    let chatInput = document.querySelector(".chat-input");
+    let playlist = document.querySelector(".playlist");
+    let stateSequence = [];
+
+    /* ================ utility ================ */
+    function nameToColor(name) {
+        let hash = 0x811c9dc5;
+
+        for (var i = 0; i < name.length; i++) {
+            hash ^= name[i];
+            hash *= 0x01000193;
+        }
+
+        if (hash < 0) hash *= -1;
+
+        let color = hash.toString(16);
+        color = color.slice(0, 6);
+        return "#" + color;
+    }
+
+    function isSubArrayEnd(A, B) {
+        if (A.length > B.length) return false;
+
+        let i = 0
+        while (i < A.length) {
+            if (A[A.length - i - 1] != B[B.length - i - 1])
+                return false;
+            i++
+        }
+
+        return true;
+    }
+
+    function matchYoutubeUrl(url) {
+        let p = /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
+        return (url.match(p)) ? RegExp.$1 : false;
+    }
+
+    function updateUsersList(usernames) {
+        users.innerHTML = "";
+        let list = String(usernames).split(',');
+        for (let i = 0; i < list.length - 1; i++) {
+            let color = nameToColor(list[i]);
+            users.innerHTML += `<p style="color: ${color}"><b>${list[i]}</b></p>\n`;
+        }
+    }
+
+    function updateChat(data) {
+        let list = String(data).split(',');
+        let name = list[0];
+        let msg = data.slice(name.length + 1, data.length);
+        let color = nameToColor(name);
+        chatBox.innerHTML += `<p style="color: ${color}; display: inline-block;"><b>${name}</b></p>: ${msg}\n`;
+    }
+
+    function updatePlayingVideo(videoId) {
+        let videoHtml = (`<div class="playlist-item">
+                            <img src="https://img.youtube.com/vi/${videoId}/0.jpg">
+                            <div class="playlist-overlay">
+                                <button><i class="fa-solid fa-xmark"></i></button>
+                                <button><i class="fa-solid fa-play"></i></i></button>
+                            </div>
+                        </div>`);
+        playlist.innerHTML = videoHtml;
+    }
+
+    /* ================ API ================ */
+    class Message {
+        constructor(Type, Data) {
+            this.Type = Type;
+            this.Data = Data;
+        }
+
+        static from(json) {
+            return Object.assign(new Message(), json);
+        }
+
+        to() {
+            return JSON.stringify(this);
+        }
+    }
+
+    /* ================ youtube ================ */
+    let tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    let firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    let player;
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('youtube-iframe', {
+            playerVars: {
+                'playsinline': 1
+            },
+            events: {
+                'onReady': onPlayerReady,
+                'onStateChange': onPlayerStateChange
+            }
+        });
+    }
+
+    // The API will call this function when the video player is ready.
+    function onPlayerReady(event) {
+        event.target.playVideo();
+    }
+
+    // The API calls this function when the player's state changes.
+    // The function indicates that when playing a video (state=1).
+    function onPlayerStateChange(event) {
+        // detect seek method being state [2,3,1] or [3, 1]
+        setTimeout(function () { stateSequence = []; }, 5000);
+        stateSequence.push(event.data);
+        if (isSubArrayEnd([2, 3, 1], stateSequence) || isSubArrayEnd([3, 1], stateSequence)) {
+            socket.send(new Message("seek", player.getCurrentTime().toFixed(0).toString()).to());
+            return;
+        }
+
+        switch (event.data) {
+            case YT.PlayerState.PLAYING:
+                socket.send(new Message("play", "").to());
+                break;
+            case YT.PlayerState.PAUSED:
+                socket.send(new Message("pause", "").to());
+                break;
+        }
+    }
+
+    function addVideo(videoId) {
+        player.loadVideoById(videoId, 0);
+        setTimeout(() => {
+            player.unMute();
+            playVideo();
+        }, 5000);
+        youtubeIframe.style.visibility = "visible";
+    }
+
+    function playVideo() {
+        player.playVideo();
+    }
+
+    function pauseVideo() {
+        player.pauseVideo();
+    }
+
+    function seekVideo(seconds, allowSeekAhead) {
+        player.seekTo(seconds, allowSeekAhead);
+        setTimeout(() => {
+            playVideo();
+        }, 5000);
+    }
+
+    /* ================ onClick ================ */
+    // Search input onClick with Enter key
+    searchInput.addEventListener("keyup", event => {
+        if (event.key !== "Enter") return; // Use `.key` instead.
+        document.querySelector(".search-btn").click(); // Things you want to do.
+        event.preventDefault(); // No need to `return false;`.
+    });
+
+    // Search buttons onClick
+    searchBtn.addEventListener('click', function () {
+        let videoId = matchYoutubeUrl(searchInput.value);
+        if (videoId) {
+            socket.send(new Message("add", videoId).to());
+        } else {
+            alert("Failed to add video: " + searchInput.value);
+        }
+        searchInput.value = "";
+    });
+
+    // Chat input onClick with Enter key
+    chatInput.addEventListener("keyup", event => {
+        if (event.key !== "Enter") return; // Use `.key` instead.
+        document.querySelector(".chat-btn").click(); // Things you want to do.
+        event.preventDefault(); // No need to `return false;`.
+    });
+
+    // Chat buttons onClick
+    chatBtn.addEventListener('click', function () {
+        socket.send(new Message("chat", chatInput.value).to());
+        chatInput.value = "";
+    });
+
+    /* ================ websocket ================ */
+    socket.onopen = function () {
+        console.log("Connected!");
+    };
+
+    socket.onmessage = function (e) {
+        let r = JSON.parse(e.data);
+        console.log(r);
+        if (r.Type == "update") {
+            updateUsersList(r.Data);
+        }
+        if (r.Type == "chat") {
+            updateChat(r.Data);
+        }
+        if (r.Type == "add") {
+            addVideo(r.Data);
+            updatePlayingVideo(r.Data);
+        }
+        if (r.Type == "pause") {
+            pauseVideo();
+        }
+        if (r.Type == "play") {
+            playVideo();
+        }
+        if (r.Type == "seek") {
+            seekVideo(r.data, true);
+        }
+    };
+</script>
+
+</html>
